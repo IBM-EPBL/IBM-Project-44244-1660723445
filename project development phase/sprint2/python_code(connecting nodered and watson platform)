@@ -1,0 +1,35 @@
+import json
+import wiotp.sdk.device
+import time
+
+myConfig = {
+    "identity":{
+        "orgId": "hj5fmy"
+        "typeId": "NodeMCU"
+        "deviceId": "12345"
+        },
+    "auth": {
+        "token": "12345678"
+        }
+    }
+client=wiot.sdk.device.DeviceClient(config=myConfig, logHandlers=None)
+client.connect()
+
+while True:
+    name= "TCE"
+
+    #in area location
+    latitude=9.95143
+    longitude=78.1158
+
+    #out area location
+    #latitude=9.9535
+    #longitude=78.1188
+
+    myData={'name': name,'lat':latitude,'lon':longitude}
+    client.publishEvent(eventId="status", msgFormat="json", data=myData,qos=0,onPublish=None)
+    print("Data published to IBM IoT Platform:", myData)
+    time.sleep(5)
+
+    client.disconnect()
+
